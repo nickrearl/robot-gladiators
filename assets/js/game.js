@@ -28,7 +28,7 @@ var fight = function(enemyName) {
         if (confirmSkip) {
             window.alert(playerName + " has decided to skip this fight. Goodbye!");
     
-            playerMoney = playerMoney - 10;
+            playerMoney = Math.max(0, playerMoney - 10);
     
             console.log("playerMoney", playerMoney)
     
@@ -36,10 +36,12 @@ var fight = function(enemyName) {
         }
     }
 
-    enemyHealth = enemyHealth - playerAttack;
+    var damage = randomNumber(playerAttack - 3, playerAttack)
+
+    enemyHealth = Math.max(0, enemyHealth - damage);
 
     console.log(
-        playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + "health remaining"
+        playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining"
     );
 
     if (enemyHealth <= 0) {
@@ -53,14 +55,16 @@ var fight = function(enemyName) {
         window.alert(enemyName + " still has " + enemyHealth + " health left.");
     }
 
-    playerHealth = playerHealth - enemyAttack;
+    var damage = randomNumber(enemyAttack - 3, enemyAttack);
+
+    playerHealth = Math.max(0, playerHealth - damage);
 
     console.log(
         enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining"
     );
 
     if (playerHealth <= 0) {
-        window.alert(playerName + "has died ");
+        window.alert(playerName + " has died.");
 
         break;
 
@@ -87,7 +91,7 @@ var startGame = function(){
 
             var pickedEnemyName = enemyNames[i];
 
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
 
         fight(pickedEnemyName);
             
@@ -182,6 +186,12 @@ var shop = function() {
             shop();
             break;
     }
+};
+
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min +1) + min);
+
+    return value;
 };
 
 startGame();
